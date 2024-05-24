@@ -25,19 +25,19 @@ public class AuthController(AuthClientService auth) : Controller
         {
             try
             {
-                // Esta función verifica en backend que el correo y contraseña sean válidos
-                var token = await auth.ObtenTokenAsync(model.Email, model.Password);
+                // This function verifies in the backend if the email and the password are valid.
+                var token = await auth.ObtainTokenAsync(model.Email, model.Password);
                 var claims = new List<Claim>
                 {
-                    // Todo esto se guarda en la Cookie
+                    // This is storaged in the cookie
                     new(ClaimTypes.Name, token.Email),
-                    new(ClaimTypes.GivenName, token.Nombre),
+                    new(ClaimTypes.GivenName, token.Name),
                     new("jwt", token.Jwt),
-                    new(ClaimTypes.Role, token.Rol),
+                    new(ClaimTypes.Role, token.Role),
                 };
-                auth.IniciaSesionAsync(claims);
+                auth.LoginAsync(claims);
 
-                // Usuario válido, lo envía a la lista de Peliculas
+                // Valid user, is send to the Movies list
                 return RedirectToAction("Index", "Peliculas");
             }
             catch (Exception)
@@ -49,13 +49,13 @@ public class AuthController(AuthClientService auth) : Controller
         return View(model);
     }
 
-    [Authorize(Roles = "Administrador, Usuario")]
-    public async Task<IActionResult> SalirAsync()
+    //[Authorize(Roles = "Administrador, Usuario")]
+    public async Task<IActionResult> ExitAsync()
     {
-        // Cierra la sesión
+        // Close the sesion
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-        // Sino, se redirige a la página inicial
+        // Else, returns to the main menu
         return RedirectToAction("Index", "Auth");
     }
 }

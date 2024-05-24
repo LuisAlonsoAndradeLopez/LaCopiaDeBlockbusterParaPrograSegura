@@ -1,0 +1,18 @@
+@model User
+
+<div class="card mt-3">
+    <div class="card-body">
+        <div class="mb-3 ps-3">
+            <label asp-for="Email" class="form-label form-text"></label>
+            <div class="form-text text-body">@Model.Email</div>
+        </div>
+        <div class="mb-3 ps-3">
+            <label asp-for="Name" class="form-label form-text"></label>
+            <div class="form-text text-body">@Model.Name</div>
+        </div>
+        <div class="mb-3 ps-3">
+            <label asp-for="Role" class="form-label form-text"></label>
+            <div class="form-text text-body">@Model.Role</div>
+        </div>
+    </div>
+</div>

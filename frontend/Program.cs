@@ -10,24 +10,24 @@ builder.Services.AddControllersWithViews();
 // Soporte para consultar el API
 var UrlWebAPI = builder.Configuration["UrlWebAPI"];
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddTransient<EnviaBearerDelegatingHandler>();
-builder.Services.AddTransient<RefrescaTokenDelegatingHandler>();
+builder.Services.AddTransient<SendBearerDelegatingHandler>();
+builder.Services.AddTransient<RefreshTokenDelegatingHandler>();
 builder.Services.AddHttpClient<AuthClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); });
-builder.Services.AddHttpClient<CategoriasClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
-    .AddHttpMessageHandler<EnviaBearerDelegatingHandler>()
-    .AddHttpMessageHandler<RefrescaTokenDelegatingHandler>();
-builder.Services.AddHttpClient<UsuariosClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
-    .AddHttpMessageHandler<EnviaBearerDelegatingHandler>()
-    .AddHttpMessageHandler<RefrescaTokenDelegatingHandler>();
+builder.Services.AddHttpClient<CategoriesClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
+    .AddHttpMessageHandler<SendBearerDelegatingHandler>()
+    .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
+builder.Services.AddHttpClient<UsersClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
+    .AddHttpMessageHandler<SendBearerDelegatingHandler>()
+    .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
 builder.Services.AddHttpClient<RolesClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
-    .AddHttpMessageHandler<EnviaBearerDelegatingHandler>()
-    .AddHttpMessageHandler<RefrescaTokenDelegatingHandler>();
-builder.Services.AddHttpClient<PeliculasClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
-    .AddHttpMessageHandler<EnviaBearerDelegatingHandler>()
-    .AddHttpMessageHandler<RefrescaTokenDelegatingHandler>();
-builder.Services.AddHttpClient<PerfilClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
-    .AddHttpMessageHandler<EnviaBearerDelegatingHandler>()
-    .AddHttpMessageHandler<RefrescaTokenDelegatingHandler>();
+    .AddHttpMessageHandler<SendBearerDelegatingHandler>()
+    .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
+builder.Services.AddHttpClient<MoviesClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
+    .AddHttpMessageHandler<SendBearerDelegatingHandler>()
+    .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
+builder.Services.AddHttpClient<ProfileClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
+    .AddHttpMessageHandler<SendBearerDelegatingHandler>()
+    .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
 
 // Soporte para Cookie Auth
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

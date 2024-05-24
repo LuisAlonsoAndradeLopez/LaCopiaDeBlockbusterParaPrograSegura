@@ -13,7 +13,7 @@ public class Movie
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [DataType(DataType.MultilineText)]
-    public string Sinopsis { get; set; } = "Sin sinopsis";
+    public string Synopsis { get; set; } = "Sin sinopsis";
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [Range(1950, 2024, ErrorMessage = "El valor del campo {0} debe estar entre {1} y {2}.")]
