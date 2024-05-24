@@ -2,13 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace frontendnet.Models;
 
-public class PeliculaCategoria
+public class MovieCategory
 {
     [Display (Name = "Categoría")]
     [Required (ErrorMessage = "El campo {0} es obligatorio.")]
-    public int? CategoriaId { get; set; }
+    public int? CategoryId { get; set; }
     
-    public string? Nombre { get; set; }
+    public string? Name { get; set; }
 
-    public Pelicula? Pelicula { get; set; }
+    public Movie? Movie { get; set; }
 }

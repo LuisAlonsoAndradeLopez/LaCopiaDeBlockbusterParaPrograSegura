@@ -10,22 +10,23 @@ using backendnet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Soporte para generar JWT
-builder.Services.AddScoped<JwtTokenService>();
+//Support for generate JWT
+//builder.Services.AddScoped<JwtTokenService>();
 
-//Soporte para MySQL
+//Support for MySQL
 var connectionString = builder.Configuration.GetConnectionString("DataContext");
 builder.Services.AddDbContext<IdentityContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-//Soporte para Identity
+//Support for Identity
+/*
 builder.Services.AddIdentity<CustomIdentityUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
 
-    //Cambie aquí como quiere que se manejen sus contraseñas
+    //Password handler
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
@@ -34,17 +35,19 @@ builder.Services.AddIdentity<CustomIdentityUser, IdentityRole>(options =>
     options.Password.RequiredUniqueChars = 1;
 })
 .AddEntityFrameworkStores<IdentityContext>();
+*/
 
-//Soporte para JWT
+/*
+//Support for JWT
 builder.Services
-    .AddHttpContextAccessor()   //Para poder acceder al HttpContext()
-    .AddAuthorization() // Para autorizar en cada método el acceso
+    .AddHttpContextAccessor()   //For access to HttpContext()
+    .AddAuthorization() // For autorize the access in every method
     .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddJwtBearer(options =>    //Para autenticar con JWT
+    .AddJwtBearer(options =>    //For autenticate with JWT
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -52,13 +55,14 @@ builder.Services
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],  //Leido desde appSettings
-            ValidAudience = builder.Configuration["Jwt:Audience"],  //Leido desde appSettings
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],  //From appSettings
+            ValidAudience = builder.Configuration["Jwt:Audience"],  //From appSettings
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
         };
     });
+*/
 
-//Soporte para CORS
+//Support for CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy
@@ -72,43 +76,39 @@ builder.Services.AddCors(options =>
     );
 });
 
-//Agregar la funcionalidad de controladores
+//Adding the functionality for the controllers
 builder.Services.AddControllers();
 
-//Agrega la documentación de la API
+//Adding API documentation
 builder.Services.AddSwaggerGen();
 
-//Construye la aplicación web
+//Build the webapp
 var app = builder.Build();
 
-//Mostraremos la documentación solo en ambiente de desarrollo
+//Show swagger only in developement enviorment
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-//Agregaremos un middleware para el manejo de errores
+//Adding a middleware for error handler
 app.UseExceptionHandler("/error");
 
-//Utiliza rutas para los endpoints de los controladores
-app.UseRouting();
+//Use routes for controllers endpoints
+//app.UseRouting();
 
 
-//Utiliza Autenticación
-app.UseAuthentication();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
-//Utiliza Autorizacion
-app.UseAuthorization();
-
-//Agrega el middleware para refrescar el token
-app.UseSlidingExpirationJwt();
+//Adding the middleware for refresh the token
+//app.UseSlidingExpirationJwt();
 
 
-//Usa Cors con la policy definida anteriormente
 app.UseCors();
 
-//Establece el uso de rutas sin especificar una por default
+//Establish the use of the routes without specifies anyone by default
 app.MapControllers();
 
 app.Run();

@@ -7,14 +7,14 @@ namespace backendnet.Data;
 
 public class IdentityContext(DbContextOptions<IdentityContext> options) : IdentityDbContext<CustomIdentityUser>(options)
 {
-    public DbSet<Pelicula> Pelicula { get; set; }
-    public DbSet<Categoria> Categoria { get; set; }
+    public DbSet<Movie> Movie { get; set; }
+    public DbSet<Category> Category { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //Inicializa la base de datos
-        modelBuilder.ApplyConfiguration(new SeedCategoria());
-        modelBuilder.ApplyConfiguration(new SeedPelicula());
+        //Initialize the database
+        //modelBuilder.ApplyConfiguration(new SeedCategory());
+        //modelBuilder.ApplyConfiguration(new SeedMovie());
         modelBuilder.SeedUserIdentityData();
 
         base.OnModelCreating(modelBuilder);

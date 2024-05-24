@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backendnet.Data;
 
@@ -11,9 +12,11 @@ using backendnet.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20240524014546_InitialCreation")]
+    partial class InitialCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,13 +68,13 @@ namespace backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "617c881d-a226-4116-a2ef-e79fcd6896eb",
+                            Id = "5dbd47f2-c7ff-411e-9685-9b8629cf9826",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
-                            Id = "041965ea-e7ec-4a2b-874b-a8d61f3239ad",
+                            Id = "5fb34498-aed6-45bc-a664-e381f903f937",
                             Name = "Usuario",
                             NormalizedName = "USUARIO"
                         });
@@ -162,6 +165,18 @@ namespace backend.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "fa4badf8-c102-42cc-9716-706c7c8c18a1",
+                            RoleId = "5dbd47f2-c7ff-411e-9685-9b8629cf9826"
+                        },
+                        new
+                        {
+                            UserId = "2da86a81-daa9-4d06-a6a6-85c93e3295ff",
+                            RoleId = "5fb34498-aed6-45bc-a664-e381f903f937"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -272,6 +287,44 @@ namespace backend.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "fa4badf8-c102-42cc-9716-706c7c8c18a1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1ab679a0-07b5-4999-bbcf-dabe0910d273",
+                            Email = "gvera@uv.mx",
+                            EmailConfirmed = false,
+                            IsProtected = true,
+                            LockoutEnabled = false,
+                            Name = "Guillermo Humberto Vera Amaro",
+                            NormalizedEmail = "GVERA@UV.MX",
+                            NormalizedUserName = "GVERA@UV.MX",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAX7oCAqTV3vtZWdbWhWBOVoTuWY8KKCModpkYwY6TYfBMXnfndr0NBY7mRnGlvcNQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "366ff157-a7ad-44c1-a02e-7ab7521d81fd",
+                            TwoFactorEnabled = false,
+                            UserName = "gvera@uv.mx"
+                        },
+                        new
+                        {
+                            Id = "2da86a81-daa9-4d06-a6a6-85c93e3295ff",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "59299a2c-adcb-4e06-9adf-42b39e7738e7",
+                            Email = "patito@uv.mx",
+                            EmailConfirmed = false,
+                            IsProtected = false,
+                            LockoutEnabled = false,
+                            Name = "Usuario patito",
+                            NormalizedEmail = "PATITO@UV.MX",
+                            NormalizedUserName = "PATITO@UV.MX",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG8gF4gwN+0wZdRVlZ1DxxcWtKEY3a7CXtP1fAUSF0wRY19Zj/PNIjn9SvMu4IMctw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "863337cb-5b45-4f8f-9e6d-492841ed73c3",
+                            TwoFactorEnabled = false,
+                            UserName = "patito@uv.mx"
+                        });
                 });
 
             modelBuilder.Entity("backendnet.Models.Movie", b =>

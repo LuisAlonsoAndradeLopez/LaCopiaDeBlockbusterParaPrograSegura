@@ -2,7 +2,7 @@ using System.Security.Claims;
 
 namespace frontendnet.Middlewares;
 
-public class EnviaBearerDelegatingHandler(IHttpContextAccessor httpContextAccessor) : DelegatingHandler
+public class SendBearerDelegatingHandler(IHttpContextAccessor httpContextAccessor) : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {

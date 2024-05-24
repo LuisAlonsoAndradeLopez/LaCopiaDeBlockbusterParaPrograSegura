@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace frontendnet.Models;
 
-public class Usuario
+public class User
 {
     [Display(Name = "Id")]
     public string? Id { get; set; }
@@ -12,8 +12,8 @@ public class Usuario
     public required string Email { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-    public required string Nombre { get; set; }
+    public required string Name { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")] 
-    public required string Rol { get; set; }
+    public required string Role { get; set; }
 }

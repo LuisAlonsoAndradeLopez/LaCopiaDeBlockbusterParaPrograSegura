@@ -1,0 +1,7 @@
+//For create the database tables with code-first
+*dotnet tool update --global dotnet-ef
+*dotnet ef migrations add InitialCreation
+*dotnet ef database update
+*dotnet ef database update 0
+
+Autentication and authorization disabled, enable when the frontend is finished

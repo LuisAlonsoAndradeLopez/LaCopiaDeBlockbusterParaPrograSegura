@@ -7,17 +7,17 @@ namespace frontendnet.Services;
 
 public class AuthClientService(HttpClient client, IHttpContextAccessor httpContextAccessor)
 {
-    public async Task<AuthUser> ObtenTokenAsync(string email, string password)
+    public async Task<AuthUser> ObtainTokenAsync(string email, string password)
     {
-        Login usuario = new() { Email = email, Password = password };
-        // Realizo la llamada al Web API
-        var response = await client.PostAsJsonAsync("api/auth", usuario);
+        Login user = new() { Email = email, Password = password };
+        // Web API call done
+        var response = await client.PostAsJsonAsync("api/auth", user);
         var token = await response.Content.ReadFromJsonAsync<AuthUser>();
 
         return token!;
     }
 
-    public async void IniciaSesionAsync(List<Claim> claims)
+    public async void LoginAsync(List<Claim> claims)
     {
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var authProperties = new AuthenticationProperties();

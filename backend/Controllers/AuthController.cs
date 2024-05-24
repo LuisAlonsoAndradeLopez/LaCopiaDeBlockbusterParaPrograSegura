@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backendnet.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/auth")]
 [ApiController]
 public class AuthController(UserManager<CustomIdentityUser> userManager, JwtTokenService jwtTokenService) : Controller
 {
@@ -15,32 +15,32 @@ public class AuthController(UserManager<CustomIdentityUser> userManager, JwtToke
     [HttpPost]
     public async Task<IActionResult> PostAsync([FromBody] LoginDTO loginDTO)
     {
-        //Verificamos credenciales con Identity
-        var usuario = await userManager.FindByEmailAsync(loginDTO.Email);
+        //Verify credentials with Identity
+        var user = await userManager.FindByEmailAsync(loginDTO.Email);
 
-        if (usuario is null || !await userManager.CheckPasswordAsync(usuario, loginDTO.Password))
+        if (user is null || !await userManager.CheckPasswordAsync(user, loginDTO.Password))
         {
-            //Regresa 401 Acceso no autorizado
-            return Unauthorized(new { mensaje = "Usuario o contraseña incorrectos." });
+            //Returns 401 Non autorized access
+            return Unauthorized(new { message = "Usuario o contraseña inválidos." });
         }
 
-        //Estos valores nos indicarán el usuario autenticado en cada petición usando el token
-        var roles = await userManager.GetRolesAsync(usuario);
+        //These values indicates to the autenticated user in every request using the token
+        var roles = await userManager.GetRolesAsync(user);
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, usuario.Email!),
-            new(ClaimTypes.GivenName, usuario.Nombre),
+            new(ClaimTypes.Name, user.Email!),
+            new(ClaimTypes.GivenName, user.Name),
             new(ClaimTypes.Role, roles.First())
         };
 
-        //Creamos el token de acceso
-        var jwt = jwtTokenService.GeneraToken(claims);
+        //Create the access token
+        var jwt = jwtTokenService.GenerateToken(claims);
 
-        //Le regresa su token de acceso al usuario con validez de 20 minutos
+        //Returns the access token to the user with the user, the token has 5 minutes lifetime
         return Ok(new
         {
-            usuario.Email,
-            usuario.Nombre,
+            user.Email,
+            user.Name,
             rol = string.Join(",", roles),
             jwt
         });
@@ -48,12 +48,12 @@ public class AuthController(UserManager<CustomIdentityUser> userManager, JwtToke
 
     //GET: api/auth/tiempo
     [Authorize]
-    [HttpGet("tiempo")]
-    public IActionResult GetTiempo()
+    [HttpGet("time")]
+    public IActionResult GetTime()
     {
-        string? tiempo = jwtTokenService.TiempoRestanteToken();
-        if (tiempo is null)
+        string? time = jwtTokenService.TokenRemainingTime();
+        if (time is null)
             return BadRequest();
-        return Ok(tiempo);
+        return Ok(time);
     }
 }

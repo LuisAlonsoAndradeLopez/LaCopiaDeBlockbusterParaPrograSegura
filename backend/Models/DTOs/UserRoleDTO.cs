@@ -1,7 +1,7 @@
 namespace backendnet.Models;
 
-public class UserRolDTO
+public class UserRoleDTO
 {
     public required string Id { get; set; }
-    public required string Nombre { get; set; }
+    public required string Name { get; set; }
 }

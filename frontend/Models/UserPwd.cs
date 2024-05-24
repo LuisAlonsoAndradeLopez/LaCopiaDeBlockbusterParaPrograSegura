@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace frontendnet.Models;
 
-public class UsuarioPwd
+public class UserPwd
 {
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
     [EmailAddress(ErrorMessage = "El campo {0} no es correo válido.")]
@@ -16,7 +16,7 @@ public class UsuarioPwd
     public required string Password { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-    public required string Nombre { get; set; }
+    public required string Name { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")] 
     public required string Rol { get; set; }

@@ -7,7 +7,7 @@ namespace backendnet.Services;
 
 public class JwtTokenService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
 {
-    public string GeneraToken(List<Claim> claims)
+    public string GenerateToken(List<Claim> claims)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)); 
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature); 
@@ -15,7 +15,7 @@ public class JwtTokenService(IConfiguration configuration, IHttpContextAccessor 
             issuer: configuration["Jwt:Issuer"],
             audience: configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddMinutes(20), 
+            expires: DateTime.Now.AddMinutes(5), 
             signingCredentials: credentials);
 
         var jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
@@ -23,7 +23,7 @@ public class JwtTokenService(IConfiguration configuration, IHttpContextAccessor 
         return jwt;
     }
 
-    public string? TiempoRestanteToken()
+    public string? TokenRemainingTime()
     {
         string autorization = httpContextAccessor.HttpContext?.Request.Headers.Authorization!;
         if (string.IsNullOrEmpty(autorization) || !autorization.StartsWith("Bearer"))

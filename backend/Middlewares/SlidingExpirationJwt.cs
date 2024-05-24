@@ -18,7 +18,8 @@ public class SlidingExpirationJwt(RequestDelegate next)
             if (token != null && token.ValidTo > DateTime.UtcNow)
             {
                 TimeSpan timeRemaining = token.ValidTo.Subtract(DateTime.UtcNow);
-                //Si quedan 5 minutos, le mandamos un nuevo token
+                
+                //If remaining 5 minutes, send new token
                 if (timeRemaining.Minutes < 5)
                 {
                     var claims = new List<Claim>
@@ -27,19 +28,19 @@ public class SlidingExpirationJwt(RequestDelegate next)
                         new(ClaimTypes.GivenName, context.User.FindFirstValue (ClaimTypes.GivenName)!),
                         new(ClaimTypes.Role, context.User.FindFirstValue(ClaimTypes.Role)!)
                     };
-                    context.Response.Headers.Append("Set-Authorization", jwtTokenService.GeneraToken(claims));
+                    context.Response.Headers.Append("Set-Authorization", jwtTokenService.GenerateToken(claims));
                 }
             }
         }
         catch (Exception)
         {
-            // Ocurrió un fallo al revisar el token
+            
         }
         await next(context);
     }
 }
 
-// Esta clase es para poder agregarlo en Program.cs
+// Class for add the token to Program.cs
 public static class SlidingExpirationJwtExtensions
 {
     public static IApplicationBuilder UseSlidingExpirationJwt(this IApplicationBuilder builder)
