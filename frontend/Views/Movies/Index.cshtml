@@ -2,148 +2,87 @@
 @{
     ViewData["Title"] = "Películas";
     ViewData["SubTitle"] = "Lista";
+
+    
 }
 
 <div class="row small">
     <div style="background-color: #003088;">
         <form asp-action="Index" method="get">
             <div class="input-group input-group-sm mb-3 col">
-                <h2 class="col-4" style="margin-top: 16px;">Películas</h2>
-                <button class="col-4 btn btn-danger" asp-action="Make" title="Crear nuevo"
-                    style="margin-top: 18px;">Registrar nueva
-                    película</button>
-                <input name="s" id="s" value="@ViewBag.search" type="search" class="form-control"
-                    placeholder="Buscar por título" style="margin-top: 16px;">
-                <button class="btn btn-danger" type="submit" title="Buscar" style="margin-top: 16px;"><i
-                        class="bi bi-search"></i></button>
-
-                <!-- Uncomment when the galletas are working
                 @if (ViewBag.OnlyAdmin == true)
                 {
-
-
-
+                    <h2 class="col-6" style="margin-top: 16px;">Películas</h2>
+                    <button class="col-2 btn btn-danger" asp-action="Make" title="Crear nuevo"
+                        style="margin-top: 18px; margin-right: 50px;">Registrar nueva película
+                    </button>
+                    <input name="s" id="find-movie-by-title-text-input" value="@ViewBag.search" type="search" class="form-control"
+                        placeholder="Buscar por título" style="margin-top: 16px;">
+                    <button class="btn btn-danger" type="submit" title="Buscar" style="margin-top: 16px;"><i
+                            class="bi bi-search"></i></button>
                 }
                 else
                 {
-                                    <h2 class="col-9" style="margin-top: 16px;">Películas</h2>
-                                    <input name="s" id="s" value="@ViewBag.search" type="search" class="form-control"
-                                        placeholder="Buscar por título" style="margin-top: 16px;">
-                                    <button class="btn btn-danger" type="submit" title="Buscar" style="margin-top: 16px;"><i class="bi bi-search"></i></button>
-                } -->
+                    <h2 class="col-9" style="margin-top: 16px;">Películas</h2>
+                    <input name="s" id="find-movie-by-title-text-input" value="@ViewBag.search" type="search" class="form-control"
+                        placeholder="Buscar por título" style="margin-top: 16px;">
+                    <button class="btn btn-danger" type="submit" title="Buscar" style="margin-top: 16px;"><i class="bi bi-search"></i></button>
+                }
             </div>
         </form>
     </div>
 </div>
-<div class="row text-center mb-3" style="margin-top: 26px;">
+<div class="row text-center mb-3" style="margin-top: 16px;">
     <div class="col text-mid ">
         Mostrando @Model.Count() películas.
     </div>
 </div>
 
-<div class="table-responsive">
-    <div class="row" style="background-color: #0f0f0f; height: 200px;">
-        <img src="../../wwwroot/images/logo.png" class="col">
-        <h5 class="col">Card title</h5>
-        <p class="col">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
-        <div class="col">
-            <a class="btn btn-danger" href="#">Modificar</a>
-            <a class="btn btn-danger" href="#">Eliminar</a>
-        </div>
-    </div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
-</div>
-
-<!--
 @if (Model.Count() > 0)
 {
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered small">
-                            <thead class="text-center">
-                                <tr>
-                                    <th width="1">
-                        @Html.DisplayNameFor(model => model.First().MovieId)
-                                    </th>
-                                    <th width="1">
-                        @Html.DisplayNameFor(model => model.First().Poster)
-                                    </th>
-                                    <th>
-                        @Html.DisplayNameFor(model => model.First().Title)
-                                    </th>
-                                    <th>
-                        @Html.DisplayNameFor(model => model.First().Year)
-                                    </th>
-                                    <th></th>
-                    @if (ViewBag.SoloAdmin == true)
+    <div class="table-responsive" style="margin: 0px;">
+        @foreach (var item in Model)
+        {
+            <div class="row" style="background-color: #0f0f0f; margin: 0px;">
+                <img src='@((item.Poster == null) ? "https://via.placeholder.com/27x40": item.Poster)' class="col"
+                    style="margin: 20px; margin-left: 10px; height: 160px; width: 130px;">
+                <div class="col">
+                    <h5 style="margin-top: 20px; text-align: center;">@item.Title</h5>
+                    <h5 style="margin-top: 20px; text-align: center;">@item.Year</h5>
+                </div>
+                <p class="col" style="margin-top: 20px;">@item.Synopsis</p>
+                <div class="col">
+                    <h5 style="margin: 20px; text-align: center;">Categorias</h5>
+                    @foreach (var cat in item.Categories!)
                     {
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
+                        <h5 style="margin: 20px; text-align: center;">@cat.Name</h5>
                     }
-                                </tr>
-                            </thead>
-                            <tbody>
-                @foreach (var item in Model)
-                {
-                                                    <tr>
-                                                        <td>
-                            @Html.DisplayFor(modelItem => item.MovieId)
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <img src='@((item. Poster == null) ? "https://via.placeholder.com/27x40": item.Poster)'
-                                                                alt="@item.Title" class="img-fluid img-thumbnail" style="max-height: 40px;">
-                                                        </td>
-                                                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)<br />
-                                                            <span class="text-secondary-emphasis small d-none d-md-block">@Html.DisplayFor(modelItem =>
-                        item.Synopsis)</span><br />
-                            @foreach (var cat in item.Categories!)
-                            {
-                                                                                <span class="badge rounded-pill text-bg-secondary">@cat.Name</span>
-                            }
-                                                        </td>
-                                                        <td>
-                            @Html.DisplayFor(modelItem => item.Year)
-                                                        </td>
-                                                        <td width="1">
-                                                            <a class="text-decoration-none small text-uppercase" asp-action="Detail"
-                                                                asp-route-id="@item.MovieId">Detalle</a>
-                                                        </td>
-                        @if (ViewBag.OnlyAdmin == true)
-                        {
-                                                                            <td width="1">
-                                                                                <a class="text-decoration-none small text-uppercase" asp-action="Categories"
-                                                                                    asp-route-id="@item.MovieId">Categorías</a>
-                                                                            </td>
-                                                                            <td width="1">
-                                                                                <a class="text-decoration-none small text-uppercase" asp-action="Edit"
-                                                                                    asp-route-id="@item.MovieId">Editar</a>
-                                                                            </td>
-                                                                            <td width="1">
-                                                                                <a class="text-decoration-none small text-uppercase" asp-action="Delete"
-                                                                                    asp-route-id="@item.MovieId">Eliminar</a>
-                                                                            </td>
-                        }
-                                                    </tr>
-                }
-                            </tbody>
-                        </table>
-                    </div>
+                    @if (ViewBag.OnlyAdmin == true)
+                    {
+                    }
+                </div>
+                <div class="col" style="margin-top: 10px;">
+                    <a class="btn btn-danger btn-lg mx-auto" asp-action="Edit" asp-route-id="@item.MovieId" style="margin: 20px;">Modificar</a>
+                    <a class="btn btn-danger btn-lg mx-auto" onclick="openDeleteMovieDesitionAlert()" style="margin: 20px;">Eliminar</a>
+                </div>
+            </div>
+        }
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div>
 }
 else
 {
-                    <div class="mt-5">
-                        <div class="alert alert-warning" role="alert">
-                            No se han encontrado elementos. Intentelo de nuevo más tarde.
-                        </div>
-                    </div>
-} -->
+    <div class="mt-5">
+        <div class="alert alert-warning" role="alert">
+            No se han encontrado elementos. Intentelo de nuevo más tarde.
+        </div>
+    </div>
+}

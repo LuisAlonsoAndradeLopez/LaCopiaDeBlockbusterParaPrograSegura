@@ -25,7 +25,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         }
 
         if (User.FindFirstValue(ClaimTypes.Role) == "Administrador")
-            ViewBag.SoloAdmin = true;
+            ViewBag.OnlyAdmin = true;
 
         ViewBag.search = s;
         return View(list);
@@ -78,7 +78,8 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
     }
 
     //[Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> EditAsync(int id)
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
     {
         Movie? itemToEdit = null;
         try
@@ -95,41 +96,19 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return View(itemToEdit);
     }
 
-    [HttpPost]
-    //[Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> EditAsync(int id, Movie itemToEdit)
-    {
-        if (id != itemToEdit.MovieId) return NotFound();
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                await movies.PutAsync(itemToEdit);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (HttpRequestException ex)
-            {
-                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    return RedirectToAction("Salir", "Auth");
-            }
-        }
-
-        // Error case
-        ModelState.AddModelError("Name", "No ha sido posible realizar la acción. Inténtelo nuevamente.");
-        return View(itemToEdit);
-    }
+    
 
     //[Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Delete(int id, bool? showError = false)
+    public async Task<IActionResult> Delete(int id, bool desition, bool? showError = false)
     {
         Movie? itemToDelete = null;
         try
         {
-            itemToDelete = await movies.GetAsync(id);
-            if (itemToDelete == null) return NotFound();
-            if (showError.GetValueOrDefault())
-                ViewData["ErrorMessage"] = "No ha sido posible realizar la acción. Inténtelo nuevamente.";
+            if(desition)
+            {
+                await movies.DeleteAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
         }
         catch (HttpRequestException ex)
         {
@@ -138,29 +117,6 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         }
 
         return View(itemToDelete);
-    }
-
-
-    [HttpPost]
-    //[Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                await movies.DeleteAsync(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (HttpRequestException ex)
-            {
-                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    return RedirectToAction("Salir", "Auth");
-            }
-        }
-
-        // Error case
-        return RedirectToAction(nameof(Delete), new { id, showError = true });
     }
 
     [AcceptVerbs("GET", "POST")]

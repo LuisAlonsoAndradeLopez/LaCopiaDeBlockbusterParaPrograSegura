@@ -1,27 +1,28 @@
-GET http://localhost:3000/api/peliculas
+GET http://localhost:3000/api/movies
 
 ###
 
-GET http://localhost:3000/api/peliculas?s=Dun
+GET http://localhost:3000/api/movies?s=Dun
 
 ###
 
-GET http://localhost:3000/api/peliculas/19
+GET http://localhost:3000/api/movies/19
 
 ###
 
-POST http://localhost:3000/api/peliculas
+POST http://localhost:3000/api/movies
 Content-Type: application/json
+Authorization: Bearer
 
 {
-    "titulo": "Pichardo la Película",
-    "sinopsis": "El mismísimo Pichardo ya está aquí.",
-    "anio": 2017
+    "title": "Pichardo la Película",
+    "synopsis": "El mismísimo Pichardo ya está aquí.",
+    "year": 2017
 }
 
 ###
 
-PUT http://localhost:3000/api/peliculas/19
+PUT http://localhost:3000/api/movies/19
 Content-Type: application/json
 
 {
@@ -34,7 +35,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/peliculas/19/categoria
+POST http://localhost:3000/api/movies/19/categoria
 Content-Type: application/json
 
 {
@@ -43,7 +44,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/api/peliculas/19/categoria
+DELETE http://localhost:3000/api/movies/19/categoria
 Content-Type: application/json
 
 {
@@ -52,4 +53,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/api/peliculas/19
+DELETE http://localhost:3000/api/movies/19

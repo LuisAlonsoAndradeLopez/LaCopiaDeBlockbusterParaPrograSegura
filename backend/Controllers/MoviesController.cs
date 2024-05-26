@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backendnet.Controllers;
 
-[Route("api/movie")]
+[Route("api/movies")]
 [ApiController]
 public class MoviesController(IdentityContext context) : Controller
 {
