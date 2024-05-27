@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Películas";
     ViewData["SubTitle"] = "Editar";
+    var imageDataUrl = ViewBag.ImageDataUrl as string;
 }
 
 @section Scripts {
@@ -24,38 +25,40 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb small">
         <li class="breadcrumb-item"> <a class="text-decoration-none" title="Regresar al listado"
-                asp-action="Index">Listado</a></li>
+            asp-action="Index">Listado</a></li>
         <li class="breadcrumb-item active" aria-current="page">@ViewData["SubTitle"]</li>
     </ol>
 </nav>
 
 <h2 class="text-center mb-3">Editar Película</h2>
 
-<form id="editForm" asp-action="EditAsync" method="post">
+<form id="editForm" asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" name="_method" value="PUT" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card mt-3">
         <div class="row g-8">
+            <input type="hidden" name="MovieId" asp-for="MovieId" />
             <div class="col-md-4 justify-content-center align-items-center" style="margin: 10px;">
-                <img src="https://via.placeholder.com/300x450" id="movie-image" alt="Nueva película"
+                <img src="@imageDataUrl" asp-for="Poster" id="movie-image"
                     class="img-fluid img-thumbnail mt-2 ms-2" style="max-height: 300px;">
-                <input type="file" id="select-movie-file-input" class="btn btn-primary" accept=".jpg"
+                <input src="@imageDataUrl" type="file" id="select-movie-file-input" class="btn btn-primary" accept=".jpg"
                     style="margin: 10px"></input>
+                <span asp-validation-for="Poster" class="text-danger"></span>
             </div>
             <div class="col">
                 <div class="card-body small">
                     <div class="form-floating mb-3 mt-5">
-                        <input asp-for="Title" placeholder="Nombre" class="form-control" /> <label asp-for="Title"
+                        <input asp-for="Title" placeholder="Título" class="form-control" /> <label asp-for="Title"
                             class="form-label">Titulo</label>
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Year" placeholder="Nombre" class="form-control" /> <label asp-for="Year"
+                        <input asp-for="Year" placeholder="Año" class="form-control" /> <label asp-for="Year"
                             class="form-label">Año</label>
                         <span asp-validation-for="Year" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea asp-for="Synopsis" placeholder="Poster" class="form-control form-control-lg"
+                        <textarea asp-for="Synopsis" placeholder="Sinópsis" class="form-control form-control-lg"
                             style="height: 100px"></textarea>
                         <label asp-for="Synopsis" class="form-label">Sinopsis</label>
                         <span asp-validation-for="Synopsis" class="text-danger"></span>
@@ -65,8 +68,10 @@
         </div>
     </div>
 
-    <div class="text-center mt-3">
-        <button class="btn btn-sm btn-danger" type="submit">Modificar</button>
-        <a class="btn btn-sm btn-outline-secondary" asp-action="Index" title="Cancelar">Cancelar</a>
-    </div>
+    <form method="post" action="@Url.Action("EditAsync", "Movies", new { id = @Model.MovieId })" enctype="multipart/form-data">
+        <div class="text-center mt-3">
+            <button class="btn btn-sm btn-danger" type="submit">Modificar</button>
+            <a class="btn btn-sm btn-outline-secondary" asp-action="Index" title="Cancelar">Cancelar</a>
+        </div>
+    </form>
 </form>

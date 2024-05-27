@@ -17,6 +17,11 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         try
         {
             list = await movies.GetAsync(s);
+
+
+            //string base64Poster = Convert.ToBase64String(itemToEdit.Poster);
+            //string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+            //ViewBag.ImagesDataUrls = imageDataUrl;
         }
         catch (HttpRequestException ex)
         {
@@ -86,6 +91,10 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         {
             itemToEdit = await movies.GetAsync(id);
             if (itemToEdit == null) return NotFound();
+
+            string base64Poster = Convert.ToBase64String(itemToEdit.Poster);
+            string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+            ViewBag.ImageDataUrl = imageDataUrl;
         }
         catch (HttpRequestException ex)
         {
@@ -96,7 +105,39 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return View(itemToEdit);
     }
 
-    
+    [HttpPost]
+    //[Authorize(Roles = "Administrador")]
+    public async Task<IActionResult> EditAsync(int id, Movie itemToEdit, IFormFile Poster)
+    {
+        if (id != itemToEdit.MovieId) return NotFound();
+
+        if (Poster != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await Poster.CopyToAsync(memoryStream);
+                itemToEdit.Poster = memoryStream.ToArray();
+            }
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                await movies.PutAsync(itemToEdit);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Salir", "Auth");
+            }
+        }
+
+        // Error case
+        ModelState.AddModelError("Name", "No ha sido posible realizar la acción. Inténtelo nuevamente.");
+        return View(itemToEdit);
+    }
 
     //[Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Delete(int id, bool desition, bool? showError = false)
@@ -104,7 +145,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         Movie? itemToDelete = null;
         try
         {
-            if(desition)
+            if (desition)
             {
                 await movies.DeleteAsync(id);
                 return RedirectToAction(nameof(Index));
@@ -117,16 +158,6 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         }
 
         return View(itemToDelete);
-    }
-
-    [AcceptVerbs("GET", "POST")]
-    //[Authorize(Roles = "Administrador")]
-    public IActionResult ValidatePoster(string Poster)
-    {
-        if (Uri.IsWellFormedUriString(Poster, UriKind.Absolute))
-            return Json(true);
-
-        return Json(false);
     }
 
     //[Authorize(Roles = "Administrador")]

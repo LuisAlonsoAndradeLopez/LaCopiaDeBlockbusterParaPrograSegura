@@ -22,6 +22,18 @@ Authorization: Bearer
 
 ###
 
+PUT http://localhost:3000/api/movies/1
+Content-Type: application/json
+
+{
+    "movieId": "1",
+    "title": "Pichardo la Película",
+    "synopsis": "El mismísimo Pichardo ya está aquí.",
+    "year": 2016
+}
+
+###
+
 PUT http://localhost:3000/api/movies/19
 Content-Type: application/json
 
