@@ -3,6 +3,7 @@ using frontendnet.Models;
 using frontendnet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace frontendnet;
@@ -12,16 +13,22 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
 {
     public async Task<IActionResult> Index(string? s)
     {
-        List<Movie>? list = [];
+        List<Movie>? moviesList = [];
 
         try
         {
-            list = await movies.GetAsync(s);
+            moviesList = await movies.GetAsync(s);
 
-
-            //string base64Poster = Convert.ToBase64String(itemToEdit.Poster);
-            //string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
-            //ViewBag.ImagesDataUrls = imageDataUrl;
+            //List<string> imagesDataUrls = [];
+//
+            //foreach(Movie movie in moviesList)
+            //{
+            //    string base64Poster = Convert.ToBase64String(movie.Poster);
+            //    string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+            //    imagesDataUrls.Add(imageDataUrl);
+            //}
+//
+            //ViewBag.ImagesDataUrls = imagesDataUrls;
         }
         catch (HttpRequestException ex)
         {
@@ -33,24 +40,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             ViewBag.OnlyAdmin = true;
 
         ViewBag.search = s;
-        return View(list);
-    }
-
-    public async Task<IActionResult> Detail(int id)
-    {
-        Movie? item = null;
-        try
-        {
-            item = await movies.GetAsync(id);
-            if (item == null) return NotFound();
-        }
-        catch (HttpRequestException ex)
-        {
-            if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                return RedirectToAction("Salir", "Auth");
-        }
-
-        return View(item);
+        return View(moviesList);
     }
 
     //[Authorize(Roles = "Administrador")]
@@ -61,8 +51,23 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
 
     [HttpPost]
     //[Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> MakeAsync(Movie itemToCreate)
+    public async Task<IActionResult> MakeAsync(Movie itemToCreate, IFormFile Poster)
     {
+        ModelState.Remove("Poster");
+
+        if (Poster != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await Poster.CopyToAsync(memoryStream);
+                itemToCreate.Poster = memoryStream.ToArray();
+            }
+        }
+        else
+        {
+            itemToCreate.Poster = await new HttpClient().GetByteArrayAsync("https://via.placeholder.com/300x450");
+        }
+
         if (ModelState.IsValid)
         {
             try
@@ -92,9 +97,12 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             itemToEdit = await movies.GetAsync(id);
             if (itemToEdit == null) return NotFound();
 
-            string base64Poster = Convert.ToBase64String(itemToEdit.Poster);
-            string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
-            ViewBag.ImageDataUrl = imageDataUrl;
+            if(itemToEdit.Poster != null) 
+            {
+                string base64Poster = Convert.ToBase64String(itemToEdit.Poster);
+                string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+                ViewBag.ImageDataUrl = imageDataUrl;
+            }
         }
         catch (HttpRequestException ex)
         {
@@ -109,7 +117,9 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
     //[Authorize(Roles = "Administrador")]
     public async Task<IActionResult> EditAsync(int id, Movie itemToEdit, IFormFile Poster)
     {
-        if (id != itemToEdit.MovieId) return NotFound();
+        ModelState.Remove("Poster");
+
+        if (id != itemToEdit.MovieId) return NotFound();        
 
         if (Poster != null)
         {
@@ -118,6 +128,11 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
                 await Poster.CopyToAsync(memoryStream);
                 itemToEdit.Poster = memoryStream.ToArray();
             }
+        }
+        else
+        {
+            Movie itemToEditWithExistingImage = await movies.GetAsync(id);
+            itemToEdit.Poster = itemToEditWithExistingImage?.Poster;
         }
 
         if (ModelState.IsValid)
@@ -168,6 +183,13 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         {
             itemToView = await movies.GetAsync(id);
             if (itemToView == null) return NotFound();
+
+            if(itemToView.Poster != null) 
+            {
+                string base64Poster = Convert.ToBase64String(itemToView.Poster);
+                string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+                ViewBag.ImageDataUrl = imageDataUrl;
+            }
         }
         catch (HttpRequestException ex)
         {

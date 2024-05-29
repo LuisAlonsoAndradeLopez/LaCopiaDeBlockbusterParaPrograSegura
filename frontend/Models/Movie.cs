@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace frontendnet.Models;
 
@@ -20,7 +21,7 @@ public class Movie
     [Display(Name = "Año")]
     public int Year { get; set; }
 
-    [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+    //[Required(ErrorMessage = "El campo {0} es obligatorio.")]
     public byte[]? Poster { get; set; }
 
     [Display(Name = "Eliminable")]

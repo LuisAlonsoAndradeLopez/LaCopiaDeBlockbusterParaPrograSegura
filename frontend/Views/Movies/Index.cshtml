@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Películas";
     ViewData["SubTitle"] = "Lista";
-    var imagesDataUrls = ViewBag.ImagesDataUrls as List<string>;
+    //var imagesDataUrls = ViewBag.ImagesDataUrls as List<string>;
 }
 
 @section Scripts {
@@ -68,7 +68,7 @@
     <div class="table-responsive" style="margin: 0px;">
         @foreach (var item in Model)
         {
-            <div class="row" style="background-color: #0f0f0f; margin: 0px;">
+            <div class="row" style="background-color: #0f0f0f; margin: 0px; border: 3px solid #272727;">
                 <img src='@((item.Poster == null) ? "https://via.placeholder.com/27x40": item.Poster)' class="col"
                     style="margin: 20px; margin-left: 10px; height: 160px; width: 130px;">
                 <div class="col">
@@ -77,19 +77,13 @@
                 </div>
                 <p class="col" style="margin-top: 20px;">@item.Synopsis</p>
                 <div class="col">
-                    <h5 style="margin: 20px; text-align: center;">Categorias</h5>
-                    @foreach (var cat in item.Categories!)
-                    {
-                        <h5 style="margin: 20px; text-align: center;">@cat.Name</h5>
-                    }
-                    @if (ViewBag.OnlyAdmin == true)
-                    {
-                    }
+                    <a class="btn btn-danger btn-lg mx-auto" asp-action="Categories" asp-route-id="@item.MovieId"
+                        style="margin-top: 60px;">Administrar Categorias</a>
                 </div>
                 <div class="col" style="margin-top: 10px;">
                     <a class="btn btn-danger btn-lg mx-auto" asp-action="Edit" asp-route-id="@item.MovieId"
                         style="margin: 20px;">Modificar</a>
-                    <a class="btn btn-danger btn-lg mx-auto" onclick="openDeleteMovieDesitionAlert()"
+                    <a class="btn btn-danger btn-lg mx-auto" asp-action="Delete"
                         style="margin: 20px;">Eliminar</a>
                 </div>
             </div>

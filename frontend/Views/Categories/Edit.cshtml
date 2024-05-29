@@ -16,9 +16,9 @@
     </ol>
 </nav>
 
-<h2 class="text-center mb-3">@ViewData["Title"] <small class="text-muted fs-5">@ViewData["SubTitle"]</small></h2>
+<h2 class="text-center mb-3">Editar Categoría</h2>
 
-<form asp-action="Editar">
+<form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card mt-3">
         <div class="card-body small">
@@ -27,7 +27,7 @@
                 <label asp-for="CategoryId" class="form-label"></label>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Name" placeholder="Nombre" class="form-control" />
+                <input asp-for="Name" placeholder="Nombre" class="form-control" maxlength="30" />
                 <label asp-for="Name" class="form-label"></label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>

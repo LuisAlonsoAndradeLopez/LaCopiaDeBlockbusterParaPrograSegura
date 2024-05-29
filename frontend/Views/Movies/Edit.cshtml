@@ -39,27 +39,26 @@
         <div class="row g-8">
             <input type="hidden" name="MovieId" asp-for="MovieId" />
             <div class="col-md-4 justify-content-center align-items-center" style="margin: 10px;">
-                <img src="@imageDataUrl" asp-for="Poster" id="movie-image"
-                    class="img-fluid img-thumbnail mt-2 ms-2" style="max-height: 300px;">
-                <input src="@imageDataUrl" type="file" id="select-movie-file-input" class="btn btn-primary" accept=".jpg"
-                    style="margin: 10px"></input>
+                <img src="@imageDataUrl"  id="movie-image" class="img-fluid img-thumbnail mt-2 ms-2" style="max-height: 300px;">
+                <input type="file" id="select-movie-file-input" asp-for="Poster" class="btn btn-primary" accept=".jpg"
+                    capture="environment" style="margin: 10px"></input>
                 <span asp-validation-for="Poster" class="text-danger"></span>
             </div>
             <div class="col">
                 <div class="card-body small">
                     <div class="form-floating mb-3 mt-5">
-                        <input asp-for="Title" placeholder="Título" class="form-control" /> <label asp-for="Title"
+                        <input asp-for="Title" placeholder="Título" class="form-control" maxlength="100" /> <label asp-for="Title"
                             class="form-label">Titulo</label>
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Year" placeholder="Año" class="form-control" /> <label asp-for="Year"
+                        <input asp-for="Year" placeholder="Año" class="form-control" maxlength="5" /> <label asp-for="Year"
                             class="form-label">Año</label>
                         <span asp-validation-for="Year" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
                         <textarea asp-for="Synopsis" placeholder="Sinópsis" class="form-control form-control-lg"
-                            style="height: 100px"></textarea>
+                            style="height: 100px" maxlength="500"></textarea>
                         <label asp-for="Synopsis" class="form-label">Sinopsis</label>
                         <span asp-validation-for="Synopsis" class="text-danger"></span>
                     </div>
