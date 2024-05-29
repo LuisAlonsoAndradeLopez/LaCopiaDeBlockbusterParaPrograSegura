@@ -12,14 +12,16 @@
     </ol>
 </nav>
 
-<h2 class="text-center mb-3">@ViewData["Title"] <small class="text-muted fs-5">@ViewData["SubTitle"]</small></h2>
+<div class="row" style="background-color: #b60000;">
+    <h2 class="col text-center" style="margin: 20px;">Eliminar Categoría</h2>
+</div>
 
 @if (!Model.IsProtected)
 {
-    <p class="text-danger">¿Está seguro que desea eliminar este elemento?</p>
+    <p class="text-danger" style="margin-top: 10px;">¿Está seguro que desea eliminar esta categoría?</p>
 
-    <partial name="_DetallePartial" />
-    <form asp-action="Eliminar">
+    <partial name="_PartialDetail" />
+    <form asp-action="Delete">
         <div class="text-center mt-3">
             <button id="btnEnviar" type="submit" class="btn btn-sm btn-danger">Eliminar</button>
             <a class="btn btn-sm btn-outline-secondary" asp-action="Index" title="Cancelar">Cancelar</a>

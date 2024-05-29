@@ -155,16 +155,23 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
     }
 
     //[Authorize(Roles = "Administrador")]
-    public async Task<IActionResult> Delete(int id, bool desition, bool? showError = false)
+    public async Task<IActionResult> Delete(int id, bool? showError = false)
     {
         Movie? itemToDelete = null;
         try
         {
-            if (desition)
+            itemToDelete = await movies.GetAsync(id);
+            if (itemToDelete == null) return NotFound();
+
+            if(itemToDelete.Poster != null) 
             {
-                await movies.DeleteAsync(id);
-                return RedirectToAction(nameof(Index));
+                string base64Poster = Convert.ToBase64String(itemToDelete.Poster);
+                string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+                ViewBag.ImageDataUrl = imageDataUrl;
             }
+
+            if (showError.GetValueOrDefault())
+                ViewData["ErrorMessage"] = "No ha sido posible realizar la acción. Inténtelo nuevamente.";
         }
         catch (HttpRequestException ex)
         {
@@ -173,6 +180,29 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         }
 
         return View(itemToDelete);
+    }
+
+
+    [HttpPost]
+    //[Authorize(Roles = "Administrador")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                await movies.DeleteAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Salir", "Auth");
+            }
+        }
+
+        // En caso de error
+        return RedirectToAction(nameof(Delete), new { id, showError = true });
     }
 
     //[Authorize(Roles = "Administrador")]
@@ -212,6 +242,13 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
 
             await CategoriesDropDownListAsync();
             itemToView = new MovieCategory { Movie = movie };
+
+            if(movie.Poster != null) 
+            {
+                string base64Poster = Convert.ToBase64String(movie.Poster);
+                string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+                ViewBag.ImageDataUrl = imageDataUrl;
+            }
         }
         catch (HttpRequestException ex)
         {
@@ -259,6 +296,8 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         MovieCategory? itemToView = null;
         try
         {
+            Console.WriteLine(categoryid);
+
             Movie? movie = await movies.GetAsync(id);
             if (movie == null) return NotFound();
 
@@ -266,6 +305,14 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             if (category == null) return NotFound();
 
             itemToView = new MovieCategory { Movie = movie, CategoryId = categoryid, Name = category.Name };
+
+            if(movie.Poster != null) 
+            {
+                string base64Poster = Convert.ToBase64String(movie.Poster);
+                string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
+                ViewBag.ImageDataUrl = imageDataUrl;
+            }
+
             if (showError.GetValueOrDefault())
                 ViewData["ErrorMessage"] = "No ha sido posible realizar la acción. Inténtelo nuevamente.";
         }
