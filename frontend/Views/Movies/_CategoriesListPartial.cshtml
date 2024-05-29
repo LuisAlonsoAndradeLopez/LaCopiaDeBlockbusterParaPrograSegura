@@ -1,4 +1,4 @@
-@model List<Category>
+@model Movie
 
 <div class="row small mb-3">
     <div class="col" style="margin-top: 20px;">
@@ -6,11 +6,11 @@
             title="Crear nuevo">Agregar Categoría</a>
     </div>
     <div class="col text-end" style="margin-top: 35px;">
-        Mostrando @Model.Count() elementos
+        Mostrando @Model.Categories.Count() elementos
     </div>
 </div>
 
-@if (Model.Count() > 0)
+@if (Model.Categories.Count() > 0)
 {
     <div class="table-responsive">
         <table class="table table-striped table-bordered small">
@@ -26,7 +26,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Categories)
                 {
                     <tr style="border-color: #000000;">
                         <td class="text-center" style="background-color: #000b2b;">
@@ -36,8 +36,8 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td width="1" style="background-color: #000b2b;">
-                            <a class="btn btn-danger btn-sm" asp-action="RemoveCategory"
-                                asp-route-id="@item.CategoryId">Eliminar</a>
+                            <a class="btn btn-danger btn-sm"
+                                href="@Url.Action("RemoveCategory", "Movies", new { id = Model.MovieId, categoryid = item.CategoryId})">Eliminar</a>
                         </td>
                     </tr>
                 }

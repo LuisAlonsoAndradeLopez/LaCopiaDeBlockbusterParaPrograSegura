@@ -40,8 +40,8 @@
             <div class="col-md-4 justify-content-center align-items-center" style="margin: 10px;">
                 <img id="movie-image" src="https://via.placeholder.com/300x450"
                     class="img-fluid img-thumbnail mt-2 ms-2" style="max-height: 300px;">
-                <input asp-for="Poster" type="file" asp-for="Poster" id="select-movie-file-input" class="btn btn-primary" accept=".jpg"
-                    capture="environment" style="margin: 10px"></input>
+                <input asp-for="Poster" type="file" asp-for="Poster" id="select-movie-file-input" class="btn btn-primary file-input" accept=".jpg"
+                    capture="environment" style="margin: 10px" multiple></input>
                 <span asp-validation-for="Poster" class="text-danger"></span>
             </div>
             <div class="col">

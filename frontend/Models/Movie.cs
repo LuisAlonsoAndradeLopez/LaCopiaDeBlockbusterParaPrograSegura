@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 
 namespace frontendnet.Models;
 
@@ -22,20 +23,11 @@ public class Movie
     public int Year { get; set; }
 
     //[Required(ErrorMessage = "El campo {0} es obligatorio.")]
+    [MaxLength(1048576, ErrorMessage = "El tamaño del archivo no puede ser mayor a 1 MB.")]
     public byte[]? Poster { get; set; }
 
     [Display(Name = "Eliminable")]
     public bool IsProtected { get; set; } = false;
 
-    public ICollection<Category>? Categories { get; set; }
-}
-
-public class MovieWithByteArrayPoster
-{
-    public int? MovieId { get; set; }
-    public string? Title { get; set; }
-    public string? Synopsis { get; set; } 
-    public int Year { get; set; }
-    public byte[]? Poster { get; set; }  
     public ICollection<Category>? Categories { get; set; }
 }

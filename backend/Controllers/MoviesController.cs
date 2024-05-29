@@ -59,8 +59,6 @@ public class MoviesController(IdentityContext context) : Controller
     //[Authorize(Roles = "Administrador")]
     public async Task<IActionResult> PutMovie(int id, MovieDTO movieDTO)
     {
-        Console.WriteLine(id);
-        Console.WriteLine(movieDTO.MovieId);
         if (id != movieDTO.MovieId) return BadRequest();
 
         var movie = await context.Movie.FirstOrDefaultAsync(s => s.MovieId == id);

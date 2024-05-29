@@ -296,8 +296,6 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         MovieCategory? itemToView = null;
         try
         {
-            Console.WriteLine(categoryid);
-
             Movie? movie = await movies.GetAsync(id);
             if (movie == null) return NotFound();
 
