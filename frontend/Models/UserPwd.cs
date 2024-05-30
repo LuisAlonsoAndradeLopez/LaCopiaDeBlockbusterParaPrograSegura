@@ -16,8 +16,9 @@ public class UserPwd
     public required string Password { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+    [Display(Name = "Nombre")]
     public required string Name { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")] 
-    public required string Rol { get; set; }
+    public required string Rol { get; set; } = "Usuario";
 }
