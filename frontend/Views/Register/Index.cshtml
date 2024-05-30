@@ -3,7 +3,7 @@
     ViewData["Title"] = "Registro de usuario";
 }
 
-<form asp-action="CheckMail">
+<form asp-action="CheckMail" asp-route-itemToCreate="@Model">
     <div class="card mx-auto" style="max-width: 500px;">
         <div class="card-body">
             <h1 class="h3 text-center text-secondary-emphasis">Regístrate en Blockbuster</h1>
