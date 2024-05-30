@@ -29,6 +29,10 @@ builder.Services.AddHttpClient<ProfileClientService>(httpClient => { httpClient.
     .AddHttpMessageHandler<SendBearerDelegatingHandler>()
     .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
 
+builder.Services.AddHttpClient<EmailClientService>(httpClient => { httpClient.BaseAddress = new Uri(UrlWebAPI!); })
+    .AddHttpMessageHandler<SendBearerDelegatingHandler>()
+    .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
+
 // Soporte para Cookie Auth
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
