@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregamos los servicios
+// Adding Services
 builder.Services.AddControllersWithViews();
 
-// Soporte para consultar el API
+// Support for Consult the API
 var UrlWebAPI = builder.Configuration["UrlWebAPI"];
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<SendBearerDelegatingHandler>();
@@ -33,7 +33,7 @@ builder.Services.AddHttpClient<EmailClientService>(httpClient => { httpClient.Ba
     .AddHttpMessageHandler<SendBearerDelegatingHandler>()
     .AddHttpMessageHandler<RefreshTokenDelegatingHandler>();
 
-// Soporte para Cookie Auth
+// Suport for Cookie Auth
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -46,7 +46,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-// Agregamos un middleware para el manejo de errores
+// Middleware for error handlind
 app.UseExceptionHandler("/Home/Error");
 
 app.UseStaticFiles();

@@ -37,7 +37,7 @@ public class AuthController(AuthClientService auth) : Controller
                 };
                 auth.LoginAsync(claims);
 
-                // Valid user, is send to the Movies list
+                // Valid user is send to the Movies list
                 return RedirectToAction("Index", "Peliculas");
             }
             catch (Exception)
@@ -49,7 +49,7 @@ public class AuthController(AuthClientService auth) : Controller
         return View(model);
     }
 
-    //[Authorize(Roles = "Administrador, Usuario")]
+    [Authorize(Roles = "Administrador, Usuario")]
     public async Task<IActionResult> ExitAsync()
     {
         // Close the sesion

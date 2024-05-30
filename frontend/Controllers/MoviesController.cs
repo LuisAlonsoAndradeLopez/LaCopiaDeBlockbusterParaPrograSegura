@@ -3,12 +3,11 @@ using frontendnet.Models;
 using frontendnet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace frontendnet;
 
-//[Authorize(Roles = "Administrador, Usuario")]
+[Authorize(Roles = "Administrador, Usuario")]
 public class MoviesController(MoviesClientService movies, CategoriesClientService categories) : Controller
 {
     public async Task<IActionResult> Index(string? s)
@@ -39,14 +38,14 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return View(moviesAndItsImagesInBytes);
     }
 
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public IActionResult Make()
     {
         return View();
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> MakeAsync(Movie itemToCreate, IFormFile Poster)
     {
         ModelState.Remove("Poster");
@@ -110,7 +109,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return View(itemToCreate);
     }
 
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
@@ -137,7 +136,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> EditAsync(int id, Movie itemToEdit, IFormFile Poster)
     {
         ModelState.Remove("Poster");
@@ -204,7 +203,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return View(itemToEdit);
     }
 
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Delete(int id, bool? showError = false)
     {
         Movie? itemToDelete = null;
@@ -234,7 +233,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
 
 
     [HttpPost]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Delete(int id)
     {
         if (ModelState.IsValid)
@@ -255,7 +254,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return RedirectToAction(nameof(Delete), new { id, showError = true });
     }
 
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> Categories(int id)
     {
         Movie? itemToView = null;
@@ -281,7 +280,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return View(itemToView);
     }
 
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> AddCategory(int id)
     {
         MovieCategory? itemToView = null;
@@ -309,7 +308,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> AddCategory(int id, int categoryid)
     {
         Movie? movie = null;
@@ -340,7 +339,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
         return View(new MovieCategory { Movie = movie });
     }
 
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> RemoveCategory(int id, int categoryid, bool? showError = false)
     {
         MovieCategory? itemToView = null;
@@ -374,7 +373,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> RemoveCategory(int id, int categoryid)
     {
         if (ModelState.IsValid)

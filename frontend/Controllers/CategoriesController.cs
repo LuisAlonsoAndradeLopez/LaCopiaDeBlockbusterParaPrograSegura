@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace frontendnet;
 
-//[Authorize(Roles = "Administrador")]
+[Authorize(Roles = "Administrador")]
 public class CategoriesController(CategoriesClientService categories) : Controller
 {
     public async Task<IActionResult> Index()

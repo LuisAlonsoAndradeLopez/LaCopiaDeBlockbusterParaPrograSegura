@@ -13,7 +13,7 @@ public class MoviesController(IdentityContext context) : Controller
 
     // GET: api/movies?s=title
     [HttpGet]
-    //[Authorize(Roles = "Usuario,Administrador")]
+    [Authorize(Roles = "Usuario,Administrador")]
     public async Task<ActionResult<IEnumerable<Movie>>> GetMovies(string? s)
     {
         if (string.IsNullOrEmpty(s))
@@ -24,7 +24,7 @@ public class MoviesController(IdentityContext context) : Controller
 
     // GET: api/movies/5
     [HttpGet("{id}")]
-    //[Authorize(Roles = "Usuario,Administrador")]
+    [Authorize(Roles = "Usuario,Administrador")]
     public async Task<ActionResult<Movie>> GetMovie(int id)
     {
         var movie = await context.Movie.Include(i => i.Categories).AsNoTracking().FirstOrDefaultAsync(s => s.MovieId == id);
@@ -35,7 +35,7 @@ public class MoviesController(IdentityContext context) : Controller
 
     // POST: api/movies
     [HttpPost]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult<Movie>> PostMovie(MovieDTO movieDTO)
     {
         Movie movie = new()
@@ -55,8 +55,7 @@ public class MoviesController(IdentityContext context) : Controller
 
     // PUT: api/movies/5
     [HttpPut("{id}")]
-    //[Authorize]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> PutMovie(int id, MovieDTO movieDTO)
     {
         if (id != movieDTO.MovieId) return BadRequest();
@@ -75,7 +74,7 @@ public class MoviesController(IdentityContext context) : Controller
 
     // DELETE: api/movies/5
     [HttpDelete("{id}")]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> DeleteMovie(int id)
     {
         var movie = await context.Movie.FindAsync(id);
@@ -89,7 +88,7 @@ public class MoviesController(IdentityContext context) : Controller
 
     // POST: api/movies/5/category
     [HttpPost("{id}/category")]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult> PostCategoryMovie(int id, AssignCategoryDTO itemToAdd)
     {
         Category? category = await context.Category.FindAsync(itemToAdd.CategoryId);
@@ -109,7 +108,7 @@ public class MoviesController(IdentityContext context) : Controller
 
     // DELETE: api/movies/5/category/1
     [HttpDelete("{id}/category/{categoryid}")]
-    //[Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> DeleteCategoryMovie(int id, int categoryid)
     {
         Category? category = await context.Category.FindAsync(categoryid);

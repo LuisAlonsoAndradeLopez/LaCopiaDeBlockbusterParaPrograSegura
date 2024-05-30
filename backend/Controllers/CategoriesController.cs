@@ -8,7 +8,7 @@ namespace backendnet.Controllers;
 
 [Route("api/categories")]
 [ApiController]
-//[Authorize(Roles = "Administrador")]
+[Authorize(Roles = "Administrador")]
 public class CategoriesController(IdentityContext context) : Controller
 {
 

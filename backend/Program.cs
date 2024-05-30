@@ -11,7 +11,8 @@ using backendnet.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 //Support for generate JWT
-//builder.Services.AddScoped<JwtTokenService>();
+//Comment this line if don't want authentication
+builder.Services.AddScoped<JwtTokenService>();
 
 //Support for MySQL
 var connectionString = builder.Configuration.GetConnectionString("DataContext");
@@ -21,7 +22,7 @@ builder.Services.AddDbContext<IdentityContext>(options =>
 });
 
 //Support for Identity
-/*
+//Start of the comment
 builder.Services.AddIdentity<CustomIdentityUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
@@ -35,9 +36,7 @@ builder.Services.AddIdentity<CustomIdentityUser, IdentityRole>(options =>
     options.Password.RequiredUniqueChars = 1;
 })
 .AddEntityFrameworkStores<IdentityContext>();
-*/
 
-/*
 //Support for JWT
 builder.Services
     .AddHttpContextAccessor()   //For access to HttpContext()
@@ -60,7 +59,7 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!))
         };
     });
-*/
+//End of the comment
 
 //Support for CORS
 builder.Services.AddCors(options =>
@@ -93,18 +92,18 @@ if (app.Environment.IsDevelopment())
 }
 
 //Adding a middleware for error handler
+//Start of comment
 app.UseExceptionHandler("/error");
 
 //Use routes for controllers endpoints
-//app.UseRouting();
+app.UseRouting();
 
-
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 //Adding the middleware for refresh the token
-//app.UseSlidingExpirationJwt();
-
+app.UseSlidingExpirationJwt();
+//End of the comment
 
 app.UseCors();
 

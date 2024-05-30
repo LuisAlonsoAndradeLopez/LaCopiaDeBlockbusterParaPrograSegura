@@ -1,24 +1,24 @@
-GET http://localhost:3000/api/usuarios
+GET http://localhost:3000/api/users
 
 ###
 
-GET http://localhost:3000/api/usuarios/gvera@uv.mx
+GET http://localhost:3000/api/users/gvera@uv.mx
 
 ###
 
-POST http://localhost:3000/api/usuarios
+POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-    "email": "prueba@uv.mx",
-    "password": "patito",
-    "nombre": "Un nuevo usuario pato",
-    "rol": "Administrador"
+    "email": "caffeinated340@gmail.com",
+    "password": "Fnord#234",
+    "name": "FnordManatee",
+    "role": "Administrador"
 }
 
 ###
 
-POST http://localhost:3000/api/usuarios
+POST http://localhost:3000/api/users
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZ3ZlcmFAdXYubXgiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJHdWlsbGVybW8gSHVtYmVydG8gVmVyYSBBbWFybyIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluaXN0cmFkb3IiLCJleHAiOjE3MTYwMTA4MzgsImlzcyI6IlNlcnZpZG9yRmVpSldUIiwiYXVkIjoiQ2xpZW50ZXNGZWlKV1QifQ.fEvyzwoZo0pGehQCZeIU5I3rge8mM9fgoVu4JQcRhEk
 
@@ -31,7 +31,7 @@ Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW
 
 ###
 
-PUT http://localhost:3000/api/usuarios/prueba@uv.mx
+PUT http://localhost:3000/api/users/prueba@uv.mx
 Content-Type: application/json
 
 {
@@ -41,4 +41,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/api/usuarios/prueba@uv.mx
+DELETE http://localhost:3000/api/users/prueba@uv.mx
