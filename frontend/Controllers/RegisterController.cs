@@ -1,29 +1,48 @@
 using Microsoft.AspNetCore.Mvc;
 using frontendnet.Models;
+using frontendnet.Services;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace frontendnet;
-
-public class RegisterController : Controller
+namespace frontendnet.Controllers
 {
-    public IActionResult Index()
+    public class RegisterController (UsersClientService usuarios, EmailClientService emailClientService) : Controller
     {
-        return View();
-    }
 
-    [HttpPost]
-    public IActionResult CheckMail(Register model)
-    {
-        if (ModelState.IsValid)
+        public IActionResult Index()
         {
-            // Aquí podrías realizar la lógica de envío de correo y generación de código.
-            return RedirectToAction("VerifyEmail", "Register");
+            return View();
         }
-        return View("Index", model);
-    }
+        
+        [HttpPost]
+        public async Task<IActionResult> CheckMailAsync(UserPwd itemToCreate)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //await emailClientService.SendEmailAsync(itemToCreate.Email);
+                    //await usuarios.PostAsync(itemToCreate);
+                    return RedirectToAction("VerifyEmail", "Register");
+                }
+                catch (HttpRequestException ex)
+                {
+                    if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        return RedirectToAction("Salir", "Auth");
+                }
+            }
+                ModelState.AddModelError("Email", "No ha sido posible realizar la acción. Inténtelo nuevamente.");
+                return View(itemToCreate);
+        }
 
-    public IActionResult VerifyEmail()
-    {
-        return View();
-    }
+        
+        public IActionResult VerifyEmail()
+        {
+            return View();
+        }
 
+    }
 }
