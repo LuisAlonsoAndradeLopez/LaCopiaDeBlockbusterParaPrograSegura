@@ -13,22 +13,18 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
 {
     public async Task<IActionResult> Index(string? s)
     {
-        List<Movie>? moviesList = [];
+        Dictionary<Movie, string> moviesAndItsImagesInBytes = [];
 
         try
         {
-            moviesList = await movies.GetAsync(s);
+            foreach (Movie movie in await movies.GetAsync(s))
+            {
+                string base64Poster = Convert.ToBase64String(movie.Poster);
+                string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
 
-            //List<string> imagesDataUrls = [];
-//
-            //foreach(Movie movie in moviesList)
-            //{
-            //    string base64Poster = Convert.ToBase64String(movie.Poster);
-            //    string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
-            //    imagesDataUrls.Add(imageDataUrl);
-            //}
-//
-            //ViewBag.ImagesDataUrls = imagesDataUrls;
+                moviesAndItsImagesInBytes.Add(movie, imageDataUrl);
+
+            }
         }
         catch (HttpRequestException ex)
         {
@@ -40,7 +36,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             ViewBag.OnlyAdmin = true;
 
         ViewBag.search = s;
-        return View(moviesList);
+        return View(moviesAndItsImagesInBytes);
     }
 
     //[Authorize(Roles = "Administrador")]
@@ -57,15 +53,42 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
 
         if (Poster != null)
         {
-            using (var memoryStream = new MemoryStream())
+            if (Poster.Length <= 1048576)
             {
-                await Poster.CopyToAsync(memoryStream);
-                itemToCreate.Poster = memoryStream.ToArray();
+                HashSet<string> AllowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ".jpg", ".jpeg", ".png"
+                };
+
+                HashSet<string> AllowedMimeTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    "image/jpeg", "image/png"
+                };
+
+                var fileExtension = Path.GetExtension(Poster.FileName);
+                var mimeType = Poster.ContentType;
+                if (AllowedExtensions.Contains(fileExtension) && AllowedMimeTypes.Contains(mimeType))
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await Poster.CopyToAsync(memoryStream);
+                        itemToCreate.Poster = memoryStream.ToArray();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("Poster", "El archivo debe de ser un .jpg, .jpeg o .png.");
+                }
+
+            }
+            else
+            {
+                ModelState.AddModelError("Poster", "El tamaño del archivo no puede ser mayor a 1 MB.");
             }
         }
         else
         {
-            itemToCreate.Poster = await new HttpClient().GetByteArrayAsync("https://via.placeholder.com/300x450");
+            ModelState.AddModelError("Poster", "Tienes que seleccionar una imágen.");
         }
 
         if (ModelState.IsValid)
@@ -97,7 +120,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             itemToEdit = await movies.GetAsync(id);
             if (itemToEdit == null) return NotFound();
 
-            if(itemToEdit.Poster != null) 
+            if (itemToEdit.Poster != null)
             {
                 string base64Poster = Convert.ToBase64String(itemToEdit.Poster);
                 string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
@@ -119,14 +142,41 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
     {
         ModelState.Remove("Poster");
 
-        if (id != itemToEdit.MovieId) return NotFound();        
+        if (id != itemToEdit.MovieId) return NotFound();
 
         if (Poster != null)
         {
-            using (var memoryStream = new MemoryStream())
+            if (Poster.Length <= 1048576)
             {
-                await Poster.CopyToAsync(memoryStream);
-                itemToEdit.Poster = memoryStream.ToArray();
+                HashSet<string> AllowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ".jpg", ".jpeg", ".png"
+                };
+
+                HashSet<string> AllowedMimeTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    "image/jpeg", "image/png"
+                };
+
+                var fileExtension = Path.GetExtension(Poster.FileName);
+                var mimeType = Poster.ContentType;
+                if (AllowedExtensions.Contains(fileExtension) && AllowedMimeTypes.Contains(mimeType))
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await Poster.CopyToAsync(memoryStream);
+                        itemToEdit.Poster = memoryStream.ToArray();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("Poster", "El archivo debe de ser un .jpg, .jpeg o .png.");
+                }
+
+            }
+            else
+            {
+                ModelState.AddModelError("Poster", "El tamaño del archivo no puede ser mayor a 1 MB.");
             }
         }
         else
@@ -163,7 +213,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             itemToDelete = await movies.GetAsync(id);
             if (itemToDelete == null) return NotFound();
 
-            if(itemToDelete.Poster != null) 
+            if (itemToDelete.Poster != null)
             {
                 string base64Poster = Convert.ToBase64String(itemToDelete.Poster);
                 string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
@@ -214,7 +264,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             itemToView = await movies.GetAsync(id);
             if (itemToView == null) return NotFound();
 
-            if(itemToView.Poster != null) 
+            if (itemToView.Poster != null)
             {
                 string base64Poster = Convert.ToBase64String(itemToView.Poster);
                 string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
@@ -243,7 +293,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
             await CategoriesDropDownListAsync();
             itemToView = new MovieCategory { Movie = movie };
 
-            if(movie.Poster != null) 
+            if (movie.Poster != null)
             {
                 string base64Poster = Convert.ToBase64String(movie.Poster);
                 string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";
@@ -304,7 +354,7 @@ public class MoviesController(MoviesClientService movies, CategoriesClientServic
 
             itemToView = new MovieCategory { Movie = movie, CategoryId = categoryid, Name = category.Name };
 
-            if(movie.Poster != null) 
+            if (movie.Poster != null)
             {
                 string base64Poster = Convert.ToBase64String(movie.Poster);
                 string imageDataUrl = $"data:image/jpeg;base64,{base64Poster}";

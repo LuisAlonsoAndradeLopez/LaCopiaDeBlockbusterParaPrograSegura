@@ -1,8 +1,7 @@
-@model List<Movie>
+@model Dictionary<Movie, string>
 @{
     ViewData["Title"] = "Películas";
     ViewData["SubTitle"] = "Lista";
-    //var imagesDataUrls = ViewBag.ImagesDataUrls as List<string>;
 }
 
 <div class="row small">
@@ -42,21 +41,21 @@
         @foreach (var item in Model)
         {
             <div class="row" style="background-color: #0f0f0f; margin: 0px; border: 3px solid #272727;">
-                <img src='@((item.Poster == null) ? "https://via.placeholder.com/27x40": item.Poster)' class="col"
+                <img src='@((item.Value == null) ? "https://via.placeholder.com/27x40": item.Value)' class="col"
                     style="margin: 20px; margin-left: 10px; height: 160px; width: 130px;">
                 <div class="col">
-                    <h5 style="margin-top: 20px; text-align: center;">@item.Title</h5>
-                    <h5 style="margin-top: 20px; text-align: center;">@item.Year</h5>
+                    <h5 style="margin-top: 20px; text-align: center;">@item.Key.Title</h5>
+                    <h5 style="margin-top: 20px; text-align: center;">@item.Key.Year</h5>
                 </div>
-                <p class="col" style="margin-top: 20px;">@item.Synopsis</p>
+                <p class="col" style="margin-top: 20px;">@item.Key.Synopsis</p>
                 <div class="col-3">
-                    <a class="btn btn-danger btn-lg mx-auto" asp-action="Categories" asp-route-id="@item.MovieId"
+                    <a class="btn btn-danger btn-lg mx-auto" asp-action="Categories" asp-route-id="@item.Key.MovieId"
                         style="margin-top: 76px;">Administrar Categorias</a>
                 </div>
                 <div class="col" style="margin-top: 10px;">
-                    <a class="btn btn-danger btn-lg" asp-action="Edit" asp-route-id="@item.MovieId"
+                    <a class="btn btn-danger btn-lg" asp-action="Edit" asp-route-id="@item.Key.MovieId"
                         style="margin: 20px;">Modificar</a>
-                    <a class="btn btn-danger btn-lg" asp-action="Delete" asp-route-id="@item.MovieId" 
+                    <a class="btn btn-danger btn-lg" asp-action="Delete" asp-route-id="@item.Key.MovieId" 
                         style="margin: 20px; margin-left: 28px;">Eliminar</a>
                 </div>
             </div>
