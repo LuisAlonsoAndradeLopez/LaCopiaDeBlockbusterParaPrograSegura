@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace frontendnet.Services
 {
     public class EmailClientService(HttpClient client)
@@ -13,9 +15,25 @@ namespace frontendnet.Services
                 "application/json"
             );
 
-            var response = await client.PostAsJsonAsync("api/email", requestContent);
+            var response = await client.PostAsync("api/email", requestContent);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> VerifyCodeAsync(string email, string code)
+        {
+            var requestContent = new StringContent(
+                $@"{{
+                    ""email"": ""{email}"",
+                    ""code"": ""{code}""
+                }}",
+                Encoding.UTF8,
+                "application/json"
+                );
+
+                var response = await client.PostAsync("api/email/verify", requestContent);
+
+                return response.IsSuccessStatusCode;
         }
     }
 }

@@ -75,6 +75,12 @@ builder.Services.AddCors(options =>
     );
 });
 
+// Adding the service por Email
+builder.Services.AddSingleton<EmailService>();
+
+// Adding Memory Cache
+builder.Services.AddMemoryCache();
+
 //Adding the functionality for the controllers
 builder.Services.AddControllers();
 

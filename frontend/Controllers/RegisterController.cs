@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using frontendnet.Models;
 using frontendnet.Services;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace frontendnet.Controllers
 {
@@ -24,9 +20,18 @@ namespace frontendnet.Controllers
             {
                 try
                 {
-                    //await emailClientService.SendEmailAsync(itemToCreate.Email);
-                    //await usuarios.PostAsync(itemToCreate);
-                    return RedirectToAction("VerifyEmail", "Register");
+                    bool result = await emailClientService.SendEmailAsync(itemToCreate.Email);
+                    if(result)
+                    {
+                        TempData["Email"] = itemToCreate.Email;
+                        TempData["Usuario"] = JsonConvert.SerializeObject(itemToCreate);
+                        return RedirectToAction("VerifyEmail", "Register");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Email", "No ha sido posible realizar la acción. Inténtelo nuevamente.");
+                        return View(itemToCreate);
+                    }
                 }
                 catch (HttpRequestException ex)
                 {
@@ -41,7 +46,33 @@ namespace frontendnet.Controllers
         
         public IActionResult VerifyEmail()
         {
+            ViewBag.Email = TempData["Email"];
             return View();
+        }
+
+        public async Task<IActionResult> ValidateCode(Code code)
+        {
+            if (ModelState.IsValid)
+            {
+                bool isCodeValid = await emailClientService.VerifyCodeAsync(code.Email, code.Code_);
+                if (isCodeValid)
+                {
+                    var usuarioJson = TempData["Usuario"]?.ToString();
+                    if (usuarioJson != null)
+                    {
+                        var usuario = JsonConvert.DeserializeObject<UserPwd>(usuarioJson);
+                        await usuarios.PostAsync(usuario);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError("Codigo", "Error al recuperar datos del usuario.");
+                }
+                else
+                {
+                    ModelState.AddModelError("Codigo", "Código de verificación incorrecto.");
+                }
+            }
+
+            return View("VerifyEmail", "Register");
         }
 
     }

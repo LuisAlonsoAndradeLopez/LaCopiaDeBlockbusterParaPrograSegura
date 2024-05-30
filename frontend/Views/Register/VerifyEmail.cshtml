@@ -1,13 +1,13 @@
 @model Code
 @{
-    ViewData["Title"] = "Código de verificacion";
+    ViewData["Title"] = "Código de verificación";
 }
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
 
-<form asp-action="VerifyEmail">
+<form asp-action="ValidateCode" method="post">
     <div class="card mx-auto" style="max-width: 400px;">
         <div class="card-body">
             <h1 class="h3 text-center text-secondary-emphasis">Verificación de Código</h1>
@@ -15,10 +15,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-floating mb-3">
-                <input asp-for="Code_" class="form-control" placeholder="Código" inputmode="numeric" pattern="[0-9]*">
-                <label asp-for="Code_" class="form-label">Codigo</label>
+                <input asp-for="Code_ " class="form-control" placeholder="Código" inputmode="numeric" pattern="[0-9]*">
+                <label asp-for="Code_ " class="form-label">Código</label>
                 <span asp-validation-for="Code_" class="text-danger"></span>
             </div>
+            
+            <input type="hidden" asp-for="Email" value="@ViewBag.Email" />
             
             <p class="card-text small">Ingrese el código que se le ha enviado.</p>
         </div>
