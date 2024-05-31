@@ -20,5 +20,5 @@ public class UserPwd
     public required string Name { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio.")] 
-    public required string Rol { get; set; } = "Usuario";
+    public required string Role { get; set; } = "Usuario";
 }

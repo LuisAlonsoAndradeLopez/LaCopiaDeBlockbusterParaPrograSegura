@@ -9,36 +9,36 @@ public static class SeedIdentityUserData
     public static void SeedUserIdentityData(this ModelBuilder modelBuilder)
     {
         //Adding the role "Administrador" to the "AspNetRoles" table
-        string AdminRoleId = Guid.NewGuid().ToString();        
+        string AdministradorRoleId = Guid.NewGuid().ToString();        
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
         {
-            Id = AdminRoleId,
+            Id = AdministradorRoleId,
             Name = "Administrador",
             NormalizedName = "Administrador".ToUpper()
         });
-
+//
         //Adding the role "Usuario" to the "AspNetRoles" table
-        string UserRoleId = Guid.NewGuid().ToString();
+        string UsuarioRoleId = Guid.NewGuid().ToString();
         modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
         {
-            Id = UserRoleId,
+            Id = UsuarioRoleId,
             Name = "Usuario",
             NormalizedName = "Usuario".ToUpper()
         });
 
-        /*
+        
         var UserId = Guid.NewGuid().ToString();
         modelBuilder.Entity<CustomIdentityUser>().HasData
         (
             new CustomIdentityUser
             {
                 Id = UserId, //primary key
-                UserName = "gvera@uv.mx",
-                Email = "gvera@uv.mx",
-                NormalizedEmail = "gvera@uv.mx".ToUpper(),
-                Name = "Guillermo Humberto Vera Amaro",
-                NormalizedUserName = "gvera@uv.mx".ToUpper(),
-                PasswordHash = new PasswordHasher<CustomIdentityUser>().HashPassword(null!, "patito"),
+                UserName = "caffeinated340@gmail.com",
+                Email = "caffeinated340@gmail.com",
+                NormalizedEmail = "caffeinated340@gmail.com".ToUpper(),
+                Name = "Administrador",
+                NormalizedUserName = "caffeinated340@gmail.com".ToUpper(),
+                PasswordHash = new PasswordHasher<CustomIdentityUser>().HashPassword(null!, "LaContraseñaIndescriptible#234"),
                 IsProtected = true //Este no se puede eliminar
             }
         );
@@ -60,12 +60,12 @@ public static class SeedIdentityUserData
             new CustomIdentityUser
             {
                 Id = UserId, //primary key
-                UserName = "patito@uv.mx",
-                Email = "patito@uv.mx",
-                NormalizedEmail = "patito@uv.mx".ToUpper(),
-                Name = "Usuario patito",
-                NormalizedUserName = "patito@uv.mx".ToUpper(),
-                PasswordHash = new PasswordHasher<CustomIdentityUser>().HashPassword(null!, "patito")
+                UserName = "caffeinated333@gmail.com",
+                Email = "caffeinated333@gmail.com",
+                NormalizedEmail = "caffeinated333@gmail.com".ToUpper(),
+                Name = "Usuario",
+                NormalizedUserName = "caffeinated333@gmail.com".ToUpper(),
+                PasswordHash = new PasswordHasher<CustomIdentityUser>().HashPassword(null!, "Usuario#234")
             }
         );
 
@@ -77,7 +77,6 @@ public static class SeedIdentityUserData
                 RoleId = UsuarioRoleId,
                 UserId = UserId
             }
-        );
-        */
+        );        
     }
 }

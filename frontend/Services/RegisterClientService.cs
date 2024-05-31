@@ -2,7 +2,7 @@ using System.Text;
 
 namespace frontendnet.Services
 {
-    public class EmailClientService (HttpClient client)
+    public class EmailClientService(HttpClient client)
     {
 
         public async Task<bool> SendEmailAsync(string emailTo)
@@ -31,9 +31,9 @@ namespace frontendnet.Services
                 "application/json"
                 );
 
-                var response = await client.PostAsync("api/email/verify", requestContent);
+            var response = await client.PostAsync("api/email/verify", requestContent);
 
-                return response.IsSuccessStatusCode;
+            return response.IsSuccessStatusCode;
         }
     }
 }

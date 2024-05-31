@@ -35,6 +35,7 @@ public class AuthController(AuthClientService auth) : Controller
                     new("jwt", token.Jwt),
                     new(ClaimTypes.Role, token.Rol),
                 };
+
                 auth.LoginAsync(claims);
 
                 // Valid user is send to the Movies list
