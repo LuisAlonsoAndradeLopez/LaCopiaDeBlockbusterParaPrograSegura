@@ -14,7 +14,7 @@ public class AuthClientService(HttpClient client, IHttpContextAccessor httpConte
         // Web API call done
         var response = await client.PostAsJsonAsync("api/auth", user);
         var token = await response.Content.ReadFromJsonAsync<AuthUser>();
-
+        
         return token!;
     }
 

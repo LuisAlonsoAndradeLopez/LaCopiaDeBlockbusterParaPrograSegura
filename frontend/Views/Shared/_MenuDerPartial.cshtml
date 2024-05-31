@@ -1,11 +1,9 @@
 <div class="navbar-nav small">
     <div class="navbar-text form-check form-switch form-check-reverse me-2">
-        <input class="form-check-input" type="checkbox" id="darkModeSwitch">
-        <label class="form-check-label" for="darkModeSwitch"><i class="bi bi-moon-stars modo-luz"></i></label>
     </div>
     @if (User.Identity?.IsAuthenticated == true)
     {
-        <a class="nav-link" asp-controller="Perfil">Hola de nuevo@(User.Identity.Name)!</a>
+        <h5>Hola de nuevo@(User.Identity.Name)!</h5>
         <a class="nav-link" asp-controller="Auth" asp-action="Exit">Salir</a>
     }
     else

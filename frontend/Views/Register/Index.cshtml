@@ -11,19 +11,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-floating mb-3">
-                <input asp-for="Name" class="form-control" placeholder="Nombre">
+                <input asp-for="Name" class="form-control" placeholder="Nombre" maxlength="30">
                 <label asp-for="Name" class="form-label"></label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             
             <div class="form-floating mb-3">
-                <input asp-for="Email" class="form-control" placeholder="Correo">
+                <input asp-for="Email" class="form-control" placeholder="Correo" maxlength="25">
                 <label asp-for="Email" class="form-label"></label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             
             <div class="form-floating mb-3">
-                <input asp-for="Password" class="form-control" placeholder="Contraseña" type="password">
+                <input asp-for="Password" class="form-control" placeholder="Contraseña" type="password" maxlength="20">
                 <label asp-for="Password" class="form-label"></label>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>

@@ -14,13 +14,13 @@
         <div class="row">
             @if (ViewBag.OnlyAdmin == true)
             {
-                <div class="col-7"></div>
+                <button class="col-3 btn btn-danger" asp-action="Make" title="Crear nuevo"
+                    style="margin-top: 18px; margin-right: 350px;">Registrar nueva película
+                </button>;
             }
             else
             {
-                <button class="col-3 btn btn-danger" asp-action="Make" title="Crear nuevo"
-                    style="margin-top: 18px; margin-right: 350px;">Registrar nueva película
-                </button>
+                <div class="col-7"></div>
             }
             <input name="s" id="find-movie-by-title-text-input" value="@ViewBag.search" type="search"
                 class="form-control col" placeholder="Buscar por título" style="margin-top: 16px;">

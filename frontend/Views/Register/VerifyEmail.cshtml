@@ -18,7 +18,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-floating mb-3">
-                <input asp-for="Code_" class="form-control" placeholder="Código" inputmode="numeric" pattern="[0-9]*">
+                <input asp-for="Code_" class="form-control" placeholder="Código" inputmode="numeric" pattern="[0-9]*" maxlength="6">
                 <label asp-for="Code_" class="form-label">Código</label>
                 <!-- Validation message for Code_ -->
                 <span asp-validation-for="Code_" class="text-danger"></span>

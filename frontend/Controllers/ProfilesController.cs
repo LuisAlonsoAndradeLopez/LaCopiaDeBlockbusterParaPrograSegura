@@ -21,7 +21,7 @@ public class ProfileController(ProfileClientService profile) : Controller
             {
                 Email = User.FindFirstValue(ClaimTypes.Name)!,
                 Name = User.FindFirstValue(ClaimTypes.GivenName)!,
-                Rol = User.FindFirstValue(ClaimTypes.Role)!,
+                Role = User.FindFirstValue(ClaimTypes.Role)!,
                 Jwt = User.FindFirstValue("jwt")!
             };            
         }

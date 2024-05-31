@@ -5,8 +5,8 @@ POST http://localhost:3000/api/auth
 Content-Type: application/json
 
 {
-    "email": "caffeinated340@gmail.com",
-    "password": "Fnord#234"
+    "email": "gvera@uv.mx",
+    "password": "patito"
 }
 
 ###
