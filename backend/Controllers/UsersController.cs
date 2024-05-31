@@ -9,11 +9,11 @@ namespace backendnet.Controllers;
 
 [Route("api/users")]
 [ApiController]
-[Authorize(Roles = "Administrador")]
 public class UsersController(IdentityContext context, UserManager<CustomIdentityUser> userManager) : Controller
 {
 
     // GET: api/usuarios
+    [Authorize(Roles = "Administrador")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CustomIdentityUserDTO>>> GetUsers()
     {
@@ -34,6 +34,7 @@ public class UsersController(IdentityContext context, UserManager<CustomIdentity
     }
 
     // GET: api/usuarios/email
+    [Authorize(Roles = "Administrador")]
     [HttpGet("{email}")]
     public async Task<ActionResult<CustomIdentityUserDTO>> GetUser(string email)
     {
@@ -51,6 +52,7 @@ public class UsersController(IdentityContext context, UserManager<CustomIdentity
     }
 
     // POST: api/usuarios
+    //[Authorize(Roles = "Usuario,Administrador")]
     [HttpPost]
     public async Task<ActionResult<CustomIdentityUserDTO>> PostUser(CustomIdentityUserPwdDTO userDTO)
     {
@@ -83,6 +85,7 @@ public class UsersController(IdentityContext context, UserManager<CustomIdentity
     }
 
     // PUT: api/usuarios/email
+    [Authorize(Roles = "Administrador")]
     [HttpPut("{email}")]
     public async Task<IActionResult> PutUser(string email, CustomIdentityUserDTO userDTO)
     {
@@ -109,6 +112,7 @@ public class UsersController(IdentityContext context, UserManager<CustomIdentity
     }
 
     // DELETE: api/usuarios/email
+    [Authorize(Roles = "Administrador")]
     [HttpDelete("{email}")]
     public async Task<IActionResult> DeleteUser(string email)
     {
