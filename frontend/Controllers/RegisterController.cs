@@ -61,7 +61,7 @@ namespace frontendnet.Controllers
                     if (usuarioJson != null)
                     {
                         var usuario = JsonConvert.DeserializeObject<UserPwd>(usuarioJson);
-                        await usuarios.PostAsync(usuario);
+                        //await usuarios.PostAsync(usuario);
                         return RedirectToAction("Index", "Home");
                     }
                     ModelState.AddModelError("Codigo", "Error al recuperar datos del usuario.");
