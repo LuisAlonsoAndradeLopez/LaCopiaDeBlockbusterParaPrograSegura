@@ -66,7 +66,7 @@ public class UsersController(IdentityContext context, UserManager<CustomIdentity
         };
 
         //Add to the user
-        IdentityResult result = await userManager.CreateAsync(userToCreate, userDTO.Password);
+        IdentityResult result = await userManager.CreateAsync(userToCreate, userDTO.Password);        
         if (!result.Succeeded) return BadRequest(new { mensaje = "El usuario no se ha podido crear." });
 
         //Add the desire role

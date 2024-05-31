@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 
 namespace frontendnet.Controllers
 {
-    public class RegisterController (UsersClientService usuarios, EmailClientService emailClientService) : Controller
+    public class RegisterController(UsersClientService usuarios, EmailClientService emailClientService) : Controller
     {
 
         public IActionResult Index()
         {
             return View();
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> CheckMailAsync(UserPwd itemToCreate)
         {
@@ -21,7 +21,7 @@ namespace frontendnet.Controllers
                 try
                 {
                     bool result = await emailClientService.SendEmailAsync(itemToCreate.Email);
-                    if(result)
+                    if (result)
                     {
                         TempData["Email"] = itemToCreate.Email;
                         TempData["Usuario"] = JsonConvert.SerializeObject(itemToCreate);
@@ -39,40 +39,49 @@ namespace frontendnet.Controllers
                         return RedirectToAction("Salir", "Auth");
                 }
             }
-                ModelState.AddModelError("Email", "No ha sido posible realizar la acción. Inténtelo nuevamente.");
-                return View(itemToCreate);
+            ModelState.AddModelError("Email", "No ha sido posible realizar la acción. Inténtelo nuevamente.");
+            return View(itemToCreate);
         }
 
-        
+
         public IActionResult VerifyEmail()
         {
             ViewBag.Email = TempData["Email"];
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> ValidateCode(Code code)
         {
             if (ModelState.IsValid)
             {
-                bool isCodeValid = await emailClientService.VerifyCodeAsync(code.Email, code.Code_);
-                if (isCodeValid)
+                try
                 {
-                    var usuarioJson = TempData["Usuario"]?.ToString();
-                    if (usuarioJson != null)
+                    bool isCodeValid = await emailClientService.VerifyCodeAsync(code.Email, code.Code_);
+                    if (isCodeValid)
                     {
-                        var usuario = JsonConvert.DeserializeObject<UserPwd>(usuarioJson);
-                        await usuarios.PostAsync(usuario);
-                        return RedirectToAction("Index", "Home");
+                        var usuarioJson = TempData["Usuario"]?.ToString();
+                        if (usuarioJson != null)
+                        {
+                            var usuario = JsonConvert.DeserializeObject<UserPwd>(usuarioJson);
+                            await usuarios.PostAsync(usuario);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        ModelState.AddModelError("Codigo", "Error al recuperar datos del usuario.");
                     }
-                    ModelState.AddModelError("Codigo", "Error al recuperar datos del usuario.");
+                    else
+                    {
+                        ModelState.AddModelError("Codigo", "Código de verificación incorrecto.");
+                    }
                 }
-                else
+                catch (HttpRequestException ex)
                 {
-                    ModelState.AddModelError("Codigo", "Código de verificación incorrecto.");
+                    if (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        return RedirectToAction("Salir", "Auth");
                 }
             }
 
-            return View("VerifyEmail", "Register");
+            return View("VerifyEmail", code);  // Ensure to pass the model instance `code`
         }
 
     }

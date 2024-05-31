@@ -65,13 +65,13 @@ namespace backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6a730649-8ddd-4c2c-86d4-5a30e34cf60f",
+                            Id = "76ae0c3b-5ccf-40af-9d3b-a3bb4ee53b2e",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
-                            Id = "452973aa-fe27-4fba-93f2-ed209d4e56b0",
+                            Id = "78f50495-4000-4ab0-92f8-56e948172b0d",
                             Name = "Usuario",
                             NormalizedName = "USUARIO"
                         });
@@ -162,6 +162,18 @@ namespace backend.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "1c27d5d8-8497-4275-8a89-8e7b6f5561da",
+                            RoleId = "76ae0c3b-5ccf-40af-9d3b-a3bb4ee53b2e"
+                        },
+                        new
+                        {
+                            UserId = "239afc90-2540-4314-91ae-e641351d35a7",
+                            RoleId = "78f50495-4000-4ab0-92f8-56e948172b0d"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -272,6 +284,44 @@ namespace backend.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1c27d5d8-8497-4275-8a89-8e7b6f5561da",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c44d0389-488f-4200-ab6e-06bc3aa899a1",
+                            Email = "caffeinated340@gmail.com",
+                            EmailConfirmed = false,
+                            IsProtected = true,
+                            LockoutEnabled = false,
+                            Name = "Administrador",
+                            NormalizedEmail = "CAFFEINATED340@GMAIL.COM",
+                            NormalizedUserName = "CAFFEINATED340@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAELrhordwucn2L2gqwVqNGTym6k7tBFjVjzUQpFfHL95Q2K/peRR2zNOq1xZEk/EioA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4f97a64b-de88-4c95-9124-b62ef654b7c6",
+                            TwoFactorEnabled = false,
+                            UserName = "caffeinated340@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "239afc90-2540-4314-91ae-e641351d35a7",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "9e2bed3d-b2be-456e-9e0f-955113781730",
+                            Email = "caffeinated333@gmail.com",
+                            EmailConfirmed = false,
+                            IsProtected = false,
+                            LockoutEnabled = false,
+                            Name = "Usuario",
+                            NormalizedEmail = "CAFFEINATED333@GMAIL.COM",
+                            NormalizedUserName = "CAFFEINATED333@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEONKYXIYT4eEUeN3Pibghc4Vu+TGScC34Om2z71qsaZYwVbvYn9JNVPcgOs9QV826g==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "ea37e2e8-08c2-413f-85e1-f1a29eccb878",
+                            TwoFactorEnabled = false,
+                            UserName = "caffeinated333@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("backendnet.Models.Movie", b =>

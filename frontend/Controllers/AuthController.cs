@@ -35,10 +35,11 @@ public class AuthController(AuthClientService auth) : Controller
                     new("jwt", token.Jwt),
                     new(ClaimTypes.Role, token.Role),
                 };
+
                 auth.LoginAsync(claims);
 
                 // Valid user is send to the Movies list
-                return RedirectToAction("Index", "Peliculas");
+                return RedirectToAction("Index", "Movies");
             }
             catch (Exception)
             {

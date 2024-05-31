@@ -11,7 +11,7 @@
             <p class="card-text lead">¿Quieres ver las películas disponibles en esta copia de blockbuster ya? Presiona el siguiente botón para inciar la experiencia en Netflix.</p>
             @if (User.Identity?.IsAuthenticated == true)
             {
-                <a asp-controller="Peliculas" class="btn btn-danger">Ver el catálogo de Películas</a>
+                <a asp-controller="Movies" class="btn btn-danger">Ver el catálogo de Películas</a>
             }
             else
             {

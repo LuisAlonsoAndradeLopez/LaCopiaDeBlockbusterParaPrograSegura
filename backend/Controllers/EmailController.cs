@@ -4,7 +4,7 @@ using backendnet.Services;
 
 namespace backendnet.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/email")]
     [ApiController]
     public class EmailController(EmailService emailService) : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace backendnet.Controllers
         }
 
         [HttpPost("verify")]
-        public IActionResult VerifyCode([FromBody] VerifyRequest verifyRequest)
+        public IActionResult VerifyCode(VerifyRequest verifyRequest)
         {
             if (ModelState.IsValid)
             {
@@ -30,6 +30,7 @@ namespace backendnet.Controllers
                 {
                     return Ok();
                 }
+                
                 return BadRequest("Código de verificación incorrecto.");
             }
             return BadRequest(ModelState);

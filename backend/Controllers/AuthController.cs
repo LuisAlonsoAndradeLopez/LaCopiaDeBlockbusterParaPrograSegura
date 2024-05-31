@@ -17,12 +17,19 @@ public class AuthController(UserManager<CustomIdentityUser> userManager, JwtToke
     {
         //Verify credentials with Identity
         var user = await userManager.FindByEmailAsync(loginDTO.Email);
+        Console.WriteLine(user);
+        Console.WriteLine(user);
+        Console.WriteLine(user);
+        Console.WriteLine(user);
+        Console.WriteLine(loginDTO.Password);
+        Console.WriteLine(await userManager.CheckPasswordAsync(user, loginDTO.Password));
 
         if (user is null || !await userManager.CheckPasswordAsync(user, loginDTO.Password))
         {
             //Returns 401 Non autorized access
             return Unauthorized(new { message = "Usuario o contraseña inválidos." });
         }
+
 
         //These values indicates to the autenticated user in every request using the token
         var roles = await userManager.GetRolesAsync(user);
@@ -41,7 +48,7 @@ public class AuthController(UserManager<CustomIdentityUser> userManager, JwtToke
         {
             user.Email,
             user.Name,
-            rol = string.Join(",", roles),
+            Role = string.Join(",", roles),
             jwt
         });
     }
