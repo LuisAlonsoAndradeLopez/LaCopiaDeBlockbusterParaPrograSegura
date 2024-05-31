@@ -33,12 +33,12 @@ public class AuthController(AuthClientService auth) : Controller
                     new(ClaimTypes.Name, token.Email),
                     new(ClaimTypes.GivenName, token.Name),
                     new("jwt", token.Jwt),
-                    new(ClaimTypes.Role, token.Role),
+                    new(ClaimTypes.Role, token.Rol),
                 };
                 auth.LoginAsync(claims);
 
                 // Valid user is send to the Movies list
-                return RedirectToAction("Index", "Peliculas");
+                return RedirectToAction("Index", "Movies");
             }
             catch (Exception)
             {
